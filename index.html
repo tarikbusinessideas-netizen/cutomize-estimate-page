@@ -1,201 +1,179 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Review Itemized List</title>
+  <style>
+    :root {
+      --bg:#fafafa; --card:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --green:#16a34a; --green-dark:#12843c;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
+    .wrap{max-width:760px;margin:24px auto;padding:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:22px}
+    .header{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+    .logo{width:120px;height:auto}
+    h1{margin:0;font-size:26px;font-weight:700;letter-spacing:.2px}
+    .list{list-style:none;margin:14px 0 0;padding:0;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-top:1px solid var(--border);background:#fff}
+    .row:first-child{border-top:none}
+    .left{display:flex;align-items:center;gap:12px;min-width:0}
+    .name{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .qty{font-size:14px;color:var(--muted);width:28px;text-align:right}
+    .price{font-weight:600}
+    .hr{height:1px;background:var(--border);margin:14px 0}
+    .total{display:flex;align-items:center;justify-content:space-between;font-size:18px;margin-top:8px}
+    .approve{width:100%;margin-top:16px;padding:16px 18px;border:none;border-radius:999px;background:var(--green);color:#fff;font-weight:800;font-size:18px;cursor:pointer}
+    .approve:disabled{opacity:.6;cursor:not-allowed}
+    .approve:hover{background:var(--green-dark)}
+    .foot{margin-top:8px;text-align:center;color:#9ca3af;font-size:12px}
+    .err{display:none;background:#ffeaea;color:#b00020;border:1px solid #ffb3b3;padding:10px 12px;border-radius:12px;margin:10px 0}
+    .loading{color:var(--muted);padding:8px 0}
+    /* Toggle */
+    .switch{position:relative;display:inline-block;width:44px;height:26px;flex:0 0 44px}
+    .switch input{opacity:0;width:0;height:0}
+    .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#e5e7eb;border:1px solid var(--border);transition:.2s;border-radius:999px}
+    .slider:before{content:"";position:absolute;height:20px;width:20px;left:3px;top:2px;background:white;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.2s}
+    .switch input:checked + .slider{background:var(--green)}
+    .switch input:checked + .slider:before{transform:translateX(18px)}
+    @media (max-width:520px){
+      .logo{width:90px}
+      h1{font-size:22px}
+      .name{font-size:15px}
+      .price{font-size:15px}
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!doctype html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1">&lt;meta charset="utf-8" /&gt;</p>
-<p class="p1">&lt;meta name="viewport" content="width=device-width,initial-scale=1" /&gt;</p>
-<p class="p1">&lt;title&gt;Review Itemized List&lt;/title&gt;</p>
-<p class="p1">&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>--bg:#fafafa; --card:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>--green:#16a34a; --green-dark:#12843c;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>*{box-sizing:border-box}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text)}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.wrap{max-width:760px;margin:24px auto;padding:16px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.card{background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:22px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.header{display:flex;align-items:center;gap:14px;margin-bottom:10px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.logo{width:120px;height:auto}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>h1{margin:0;font-size:26px;font-weight:700;letter-spacing:.2px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.list{list-style:none;margin:14px 0 0;padding:0;border:1px solid var(--border);border-radius:16px;overflow:hidden}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-top:1px solid var(--border);background:#fff}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.row:first-child{border-top:none}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.left{display:flex;align-items:center;gap:12px;min-width:0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.name{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.qty{font-size:14px;color:var(--muted);width:28px;text-align:right}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.price{font-weight:600}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.hr{height:1px;background:var(--border);margin:14px 0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.total{display:flex;align-items:center;justify-content:space-between;font-size:18px;margin-top:8px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.approve{width:100%;margin-top:16px;padding:16px 18px;border:none;border-radius:999px;background:var(--green);color:#fff;font-weight:800;font-size:18px;cursor:pointer}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.approve:disabled{opacity:.6;cursor:not-allowed}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.approve:hover{background:var(--green-dark)}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.foot{margin-top:8px;text-align:center;color:#9ca3af;font-size:12px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.err{display:none;background:#ffeaea;color:#b00020;border:1px solid #ffb3b3;padding:10px 12px;border-radius:12px;margin:10px 0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.loading{color:var(--muted);padding:8px 0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>/* Toggle (iOS-style) */</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.switch{position:relative;display:inline-block;width:44px;height:26px;flex:0 0 44px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.switch input{opacity:0;width:0;height:0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#e5e7eb;border:1px solid var(--border);transition:.2s;border-radius:999px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.slider:before{content:"";position:absolute;height:20px;width:20px;left:3px;top:2px;background:white;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.2s}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.switch input:checked + .slider{background:var(--green)}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.switch input:checked + .slider:before{transform:translateX(18px)}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>@media (max-width:520px){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.logo{width:90px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1{font-size:22px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.name{font-size:15px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.price{font-size:15px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="wrap"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Swap for your hosted logo if you want --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;img class="logo" src="https://img1.wsimg.com/isteam/ip/0cb93133-3d57-42c9-a286-0e0545fb16eb/logo/2d820e52-be84-4b69-8711-0f17d2bf71d7.png" alt="Handyman Husbands" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Review Itemized List&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="err" class="err"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;ul id="list" class="list"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="loading" id="loading"&gt;Loading items…&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/ul&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="hr"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="total"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;&lt;strong&gt;Updated Total:&lt;/strong&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="total"&gt;&lt;strong&gt;$0.00&lt;/strong&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="approve" class="approve" disabled&gt;Approve These Items&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="foot"&gt;Powered by Home Hero OS&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>// ====== CONFIG (set these) ======</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const API_BASE = "https://estimate.handymanhusbands.com"; <span class="Apple-converted-space">  </span>// your Node server origin</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const THANK_YOU_URL = "https://www.homeheroos.com/handyman-husbands/thank-you";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>// ================================</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const params = new URLSearchParams(location.search);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const estId = params.get("id");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const token = params.get("token");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const $list = document.getElementById("list");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const $total = document.getElementById("total");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const $btn = document.getElementById("approve");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const $err = document.getElementById("err");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const $loading = document.getElementById("loading");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const state = { lines: [], selected: {} };</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function fmtUSD(n){ return "$" + n.toFixed(2); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function renderTotal(){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const cents = state.lines.reduce((sum, l) =&gt; sum + (state.selected[l.id] ? l.amountCents : 0), 0);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$total.innerHTML = "&lt;strong&gt;" + fmtUSD(cents/100) + "&lt;/strong&gt;";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$btn.disabled = cents &lt;= 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>function makeRow(line){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const li = document.createElement("li");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>li.className = "row";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const left = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>left.className = "left";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// Toggle</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const label = document.createElement("label");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>label.className = "switch";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const input = document.createElement("input");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>input.type = "checkbox";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>input.checked = !!state.selected[line.id];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>input.addEventListener("change", () =&gt; { state.selected[line.id] = input.checked; renderTotal(); });</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const slider = document.createElement("span"); slider.className = "slider";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>label.appendChild(input); label.appendChild(slider);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const name = document.createElement("div"); name.className = "name"; name.textContent = line.name;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const qty = document.createElement("div"); qty.className = "qty"; qty.textContent = line.qty ?? 1;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>left.appendChild(label); left.appendChild(name);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const right = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>right.style.display = "flex"; right.style.alignItems = "center"; right.style.gap = "18px";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>right.appendChild(qty);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const price = document.createElement("div"); price.className = "price"; price.textContent = fmtUSD(line.amountCents/100);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>right.appendChild(price);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>li.appendChild(left); li.appendChild(right);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return li;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>async function loadLines(){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(!estId || !token){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$err.textContent = "Invalid link. Please request a new estimate link.";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$err.style.display = "block";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$loading?.remove();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>try{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const r = await fetch(`${API_BASE}/customize/lines?id=${encodeURIComponent(estId)}&amp;token=${encodeURIComponent(token)}`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const d = await r.json();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!d.ok) throw new Error(d.error || "Failed to load items.");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.lines = d.lines;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.selected = Object.fromEntries(d.lines.map(l =&gt; [l.id, true])); // default ON</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>$list.innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.lines.forEach(l =&gt; $list.appendChild(makeRow(l)));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>renderTotal();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}catch(e){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$err.textContent = e.message || "Could not load items.";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$err.style.display = "block";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$list.innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("approve").addEventListener("click", async () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>try{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const selectedLineIds = state.lines.filter(l =&gt; state.selected[l.id]).map(l =&gt; l.id);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(selectedLineIds.length === 0) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>$btn.disabled = true;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const r = await fetch(`${API_BASE}/customize/submit`, {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>method: "POST",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>headers: { "Content-Type": "application/json" },</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body: JSON.stringify({ id: estId, token, selectedLineIds })</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const d = await r.json();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!d.ok) throw new Error(d.error || "Unable to submit.");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>location.href = THANK_YOU_URL; // keep consistent with your /respond accept redirect</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}catch(e){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$err.textContent = e.message || "Submit failed.";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$err.style.display = "block";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$btn.disabled = false;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>loadLines();</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <img class="logo" src="https://img1.wsimg.com/isteam/ip/0cb93133-3d57-42c9-a286-0e0545fb16eb/logo/2d820e52-be84-4b69-8711-0f17d2bf71d7.png" alt="Handyman Husbands" />
+        <h1>Review Itemized List</h1>
+      </div>
+
+      <div id="err" class="err"></div>
+
+      <ul id="list" class="list">
+        <div class="loading" id="loading">Loading items…</div>
+      </ul>
+
+      <div class="hr"></div>
+
+      <div class="total">
+        <div><strong>Updated Total:</strong></div>
+        <div id="total"><strong>$0.00</strong></div>
+      </div>
+
+      <button id="approve" class="approve" disabled>Approve These Items</button>
+      <div class="foot">Powered by Home Hero OS</div>
+    </div>
+  </div>
+
+<script>
+  const API_BASE = "https://estimate.handymanhusbands.com"; // your Node server
+  const THANK_YOU_URL = "https://www.homeheroos.com/handyman-husbands/thank-you";
+
+  const params = new URLSearchParams(location.search);
+  const estId = params.get("id");
+  const token = params.get("token");
+
+  const $list = document.getElementById("list");
+  const $total = document.getElementById("total");
+  const $btn = document.getElementById("approve");
+  const $err = document.getElementById("err");
+
+  const state = { lines: [], selected: {} };
+
+  function fmtUSD(n){ return "$" + n.toFixed(2); }
+
+  function renderTotal(){
+    const cents = state.lines.reduce((sum, l) => sum + (state.selected[l.id] ? l.amountCents : 0), 0);
+    $total.innerHTML = "<strong>" + fmtUSD(cents/100) + "</strong>";
+    $btn.disabled = cents <= 0;
+  }
+
+  function makeRow(line){
+    const li = document.createElement("li");
+    li.className = "row";
+
+    const left = document.createElement("div");
+    left.className = "left";
+
+    const label = document.createElement("label");
+    label.className = "switch";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.checked = !!state.selected[line.id];
+    input.addEventListener("change", () => { state.selected[line.id] = input.checked; renderTotal(); });
+    const slider = document.createElement("span"); slider.className = "slider";
+    label.appendChild(input); label.appendChild(slider);
+
+    const name = document.createElement("div"); name.className = "name"; name.textContent = line.name;
+    const qty = document.createElement("div"); qty.className = "qty"; qty.textContent = line.qty ?? 1;
+
+    left.appendChild(label); left.appendChild(name);
+
+    const right = document.createElement("div");
+    right.style.display = "flex"; right.style.alignItems = "center"; right.style.gap = "18px";
+    right.appendChild(qty);
+
+    const price = document.createElement("div"); price.className = "price"; price.textContent = fmtUSD(line.amountCents/100);
+    right.appendChild(price);
+
+    li.appendChild(left); li.appendChild(right);
+    return li;
+  }
+
+  async function loadLines(){
+    if(!estId || !token){
+      $err.textContent = "Invalid link. Please request a new estimate link.";
+      $err.style.display = "block";
+      return;
+    }
+    try{
+      const r = await fetch(`${API_BASE}/customize/lines?id=${encodeURIComponent(estId)}&token=${encodeURIComponent(token)}`);
+      const d = await r.json();
+      if(!d.ok) throw new Error(d.error || "Failed to load items.");
+
+      state.lines = d.lines;
+      state.selected = Object.fromEntries(d.lines.map(l => [l.id, true]));
+
+      $list.innerHTML = "";
+      state.lines.forEach(l => $list.appendChild(makeRow(l)));
+      renderTotal();
+    }catch(e){
+      $err.textContent = e.message || "Could not load items.";
+      $err.style.display = "block";
+      $list.innerHTML = "";
+    }
+  }
+
+  document.getElementById("approve").addEventListener("click", async () => {
+    try{
+      const selectedLineIds = state.lines.filter(l => state.selected[l.id]).map(l => l.id);
+      if(selectedLineIds.length === 0) return;
+
+      $btn.disabled = true;
+      const r = await fetch(`${API_BASE}/customize/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: estId, token, selectedLineIds })
+      });
+      const d = await r.json();
+      if(!d.ok) throw new Error(d.error || "Unable to submit.");
+
+      location.href = THANK_YOU_URL;
+    }catch(e){
+      $err.textContent = e.message || "Submit failed.";
+      $err.style.display = "block";
+      $btn.disabled = false;
+    }
+  });
+
+  loadLines();
+</script>
 </body>
 </html>
