@@ -1,50 +1,63 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Review Itemized List</title>
-  <style>
-    :root {
-      --bg:#fafafa; --card:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
-      --green:#16a34a; --green-dark:#12843c;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
-    .wrap{max-width:760px;margin:24px auto;padding:16px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:22px}
-    .header{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-    .logo{width:120px;height:auto}
-    h1{margin:0;font-size:26px;font-weight:700;letter-spacing:.2px}
-    .list{list-style:none;margin:14px 0 0;padding:0;border:1px solid var(--border);border-radius:16px;overflow:hidden}
-    .row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-top:1px solid var(--border);background:#fff}
-    .row:first-child{border-top:none}
-    .left{display:flex;align-items:center;gap:12px;min-width:0}
-    .name{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .qty{font-size:14px;color:var(--muted);width:28px;text-align:right}
-    .price{font-weight:600}
-    .hr{height:1px;background:var(--border);margin:14px 0}
-    .total{display:flex;align-items:center;justify-content:space-between;font-size:18px;margin-top:8px}
-    .approve{width:100%;margin-top:16px;padding:16px 18px;border:none;border-radius:999px;background:var(--green);color:#fff;font-weight:800;font-size:18px;cursor:pointer}
-    .approve:disabled{opacity:.6;cursor:not-allowed}
-    .approve:hover{background:var(--green-dark)}
-    .foot{margin-top:8px;text-align:center;color:#9ca3af;font-size:12px}
-    .err{display:none;background:#ffeaea;color:#b00020;border:1px solid #ffb3b3;padding:10px 12px;border-radius:12px;margin:10px 0}
-    .loading{color:var(--muted);padding:8px 0}
-    /* Toggle */
-    .switch{position:relative;display:inline-block;width:44px;height:26px;flex:0 0 44px}
-    .switch input{opacity:0;width:0;height:0}
-    .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#e5e7eb;border:1px solid var(--border);transition:.2s;border-radius:999px}
-    .slider:before{content:"";position:absolute;height:20px;width:20px;left:3px;top:2px;background:white;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.2s}
-    .switch input:checked + .slider{background:var(--green)}
-    .switch input:checked + .slider:before{transform:translateX(18px)}
-    @media (max-width:520px){
-      .logo{width:90px}
-      h1{font-size:22px}
-      .name{font-size:15px}
-      .price{font-size:15px}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Review Itemized List</title>
+<style>
+  :root {
+    --bg:#fafafa; --card:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
+    --green:#16a34a; --green-dark:#12843c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
+  .wrap{max-width:760px;margin:24px auto;padding:16px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:22px}
+  .header{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .logo{width:120px;height:auto}
+  h1{margin:0;font-size:26px;font-weight:700;letter-spacing:.2px}
+
+  .list{list-style:none;margin:14px 0 0;padding:0;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+  .row{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px;border-top:1px solid var(--border);background:#fff}
+  .row:first-child{border-top:none}
+  .left{display:flex;align-items:flex-start;gap:12px;min-width:0;flex:1}
+  .qty{font-size:14px;color:var(--muted);width:28px;text-align:right}
+  .price{font-weight:600}
+  .hr{height:1px;background:var(--border);margin:14px 0}
+  .total{display:flex;align-items:center;justify-content:space-between;font-size:18px;margin-top:8px}
+  .approve{width:100%;margin-top:10px;padding:16px 18px;border:none;border-radius:999px;background:var(--green);color:#fff;font-weight:800;font-size:18px;cursor:pointer}
+  .approve:disabled{opacity:.6;cursor:not-allowed}
+  .approve:hover{background:var(--green-dark)}
+  .foot{margin-top:8px;text-align:center;color:#9ca3af;font-size:12px}
+  .err{display:none;background:#ffeaea;color:#b00020;border:1px solid #ffb3b3;padding:10px 12px;border-radius:12px;margin:10px 0}
+  .loading{color:var(--muted);padding:8px 0}
+
+  /* Toggle (iOS-style) */
+  .switch{position:relative;display:inline-block;width:44px;height:26px;flex:0 0 44px;margin-top:2px}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#e5e7eb;border:1px solid var(--border);transition:.2s;border-radius:999px}
+  .slider:before{content:"";position:absolute;height:20px;width:20px;left:3px;top:2px;background:white;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.2s}
+  .switch input:checked + .slider{background:var(--green)}
+  .switch input:checked + .slider:before{transform:translateX(18px)}
+
+  /* Show more / Show less */
+  .textBox{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .desc{
+    font-size:16px; line-height:1.25;
+    max-height:3.6em;   /* ≈ 2 lines */
+    overflow:hidden;
+  }
+  .desc.expanded{ max-height:none; }
+  .show-toggle{
+    font-size:12px; color:#6c757d; cursor:pointer; text-decoration:underline; width:max-content;
+  }
+
+  @media (max-width:520px){
+    .logo{width:90px}
+    h1{font-size:22px}
+    .price{font-size:15px}
+  }
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -67,32 +80,48 @@
         <div id="total"><strong>$0.00</strong></div>
       </div>
 
+      <!-- Minimum warning lives here -->
+      <div id="min-warn" style="display:none;color:#b00020;font-size:14px;margin:6px 0 0 2px;"></div>
+
       <button id="approve" class="approve" disabled>Approve These Items</button>
       <div class="foot">Powered by Home Hero OS</div>
     </div>
   </div>
 
 <script>
-  const API_BASE = "https://estimate.handymanhusbands.com"; // your Node server
+  // ====== CONFIG ======
+  const API_BASE = "https://estimate.handymanhusbands.com";   // your Node server origin
   const THANK_YOU_URL = "https://www.homeheroos.com/handyman-husbands/thank-you";
+  // ====================
 
   const params = new URLSearchParams(location.search);
   const estId = params.get("id");
   const token = params.get("token");
 
-  const $list = document.getElementById("list");
-  const $total = document.getElementById("total");
-  const $btn = document.getElementById("approve");
-  const $err = document.getElementById("err");
+  const $list   = document.getElementById("list");
+  const $total  = document.getElementById("total");
+  const $btn    = document.getElementById("approve");
+  const $err    = document.getElementById("err");
+  const $loading= document.getElementById("loading");
+  const $warn   = document.getElementById("min-warn");
 
   const state = { lines: [], selected: {} };
+  let MIN_JOB = 129 * 100; // fallback, server can override
 
   function fmtUSD(n){ return "$" + n.toFixed(2); }
 
-  function renderTotal(){
+  function updateTotalUI(){
     const cents = state.lines.reduce((sum, l) => sum + (state.selected[l.id] ? l.amountCents : 0), 0);
     $total.innerHTML = "<strong>" + fmtUSD(cents/100) + "</strong>";
-    $btn.disabled = cents <= 0;
+
+    if (cents < MIN_JOB) {
+      $btn.disabled = true;
+      $warn.textContent = `Minimum job is $${(MIN_JOB/100).toFixed(0)} for a technician to come out.`;
+      $warn.style.display = "block";
+    } else {
+      $btn.disabled = false;
+      $warn.style.display = "none";
+    }
   }
 
   function makeRow(line){
@@ -102,28 +131,56 @@
     const left = document.createElement("div");
     left.className = "left";
 
+    // Toggle
     const label = document.createElement("label");
     label.className = "switch";
     const input = document.createElement("input");
     input.type = "checkbox";
     input.checked = !!state.selected[line.id];
-    input.addEventListener("change", () => { state.selected[line.id] = input.checked; renderTotal(); });
+    input.addEventListener("change", () => { state.selected[line.id] = input.checked; updateTotalUI(); });
     const slider = document.createElement("span"); slider.className = "slider";
     label.appendChild(input); label.appendChild(slider);
 
-    const name = document.createElement("div"); name.className = "name"; name.textContent = line.name;
-    const qty = document.createElement("div"); qty.className = "qty"; qty.textContent = line.qty ?? 1;
+    // Text block (desc + show more/less)
+    const textBox = document.createElement("div");
+    textBox.className = "textBox";
 
-    left.appendChild(label); left.appendChild(name);
+    const desc = document.createElement("div");
+    desc.className = "desc";
+    desc.textContent = line.name;
+
+    const toggle = document.createElement("span");
+    toggle.className = "show-toggle";
+    toggle.textContent = "Show more";
+    toggle.onclick = () => {
+      const expanded = desc.classList.toggle("expanded");
+      toggle.textContent = expanded ? "Show less" : "Show more";
+    };
+
+    textBox.appendChild(desc);
+    textBox.appendChild(toggle);
+
+    left.appendChild(label);
+    left.appendChild(textBox);
 
     const right = document.createElement("div");
-    right.style.display = "flex"; right.style.alignItems = "center"; right.style.gap = "18px";
-    right.appendChild(qty);
+    right.style.display = "flex";
+    right.style.alignItems = "center";
+    right.style.gap = "18px";
 
-    const price = document.createElement("div"); price.className = "price"; price.textContent = fmtUSD(line.amountCents/100);
+    const qty = document.createElement("div");
+    qty.className = "qty";
+    qty.textContent = line.qty ?? 1;
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = fmtUSD(line.amountCents/100);
+
+    right.appendChild(qty);
     right.appendChild(price);
 
-    li.appendChild(left); li.appendChild(right);
+    li.appendChild(left);
+    li.appendChild(right);
     return li;
   }
 
@@ -131,6 +188,7 @@
     if(!estId || !token){
       $err.textContent = "Invalid link. Please request a new estimate link.";
       $err.style.display = "block";
+      $loading?.remove();
       return;
     }
     try{
@@ -138,12 +196,14 @@
       const d = await r.json();
       if(!d.ok) throw new Error(d.error || "Failed to load items.");
 
+      if (d.minJobCents) MIN_JOB = d.minJobCents;
+
       state.lines = d.lines;
-      state.selected = Object.fromEntries(d.lines.map(l => [l.id, true]));
+      state.selected = Object.fromEntries(d.lines.map(l => [l.id, true])); // default ON
 
       $list.innerHTML = "";
       state.lines.forEach(l => $list.appendChild(makeRow(l)));
-      renderTotal();
+      updateTotalUI();
     }catch(e){
       $err.textContent = e.message || "Could not load items.";
       $err.style.display = "block";
@@ -151,7 +211,7 @@
     }
   }
 
-  document.getElementById("approve").addEventListener("click", async () => {
+  $btn.addEventListener("click", async () => {
     try{
       const selectedLineIds = state.lines.filter(l => state.selected[l.id]).map(l => l.id);
       if(selectedLineIds.length === 0) return;
@@ -165,7 +225,7 @@
       const d = await r.json();
       if(!d.ok) throw new Error(d.error || "Unable to submit.");
 
-      location.href = THANK_YOU_URL;
+      location.href = THANK_YOU_URL; // keep consistent with your /respond accept redirect
     }catch(e){
       $err.textContent = e.message || "Submit failed.";
       $err.style.display = "block";
