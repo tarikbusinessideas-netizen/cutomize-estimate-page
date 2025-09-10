@@ -40,16 +40,17 @@
   .switch input:checked + .slider{background:var(--green)}
   .switch input:checked + .slider:before{transform:translateX(18px)}
 
-  /* Show more / Show less */
-  .textBox{display:flex;flex-direction:column;gap:6px;min-width:0}
+  /* One-line + ellipsis, with inline Show more/less */
+  .descWrap{display:flex;align-items:center;gap:8px;min-width:0}
   .desc{
+    flex:1 1 auto;
     font-size:16px; line-height:1.25;
-    max-height:3.6em;   /* ≈ 2 lines */
-    overflow:hidden;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; /* … */
   }
-  .desc.expanded{ max-height:none; }
+  .desc.expanded{ white-space:normal; }
   .show-toggle{
-    font-size:12px; color:#6c757d; cursor:pointer; text-decoration:underline; width:max-content;
+    flex:0 0 auto; font-size:12px; color:#6c757d; cursor:pointer; text-decoration:underline;
+    display:inline;
   }
 
   @media (max-width:520px){
@@ -94,19 +95,19 @@
   const THANK_YOU_URL = "https://www.homeheroos.com/handyman-husbands/thank-you";
   // ====================
 
-  const params = new URLSearchParams(location.search);
-  const estId = params.get("id");
-  const token = params.get("token");
+  const params  = new URLSearchParams(location.search);
+  const estId   = params.get("id");
+  const token   = params.get("token");
 
-  const $list   = document.getElementById("list");
-  const $total  = document.getElementById("total");
-  const $btn    = document.getElementById("approve");
-  const $err    = document.getElementById("err");
-  const $loading= document.getElementById("loading");
-  const $warn   = document.getElementById("min-warn");
+  const $list    = document.getElementById("list");
+  const $total   = document.getElementById("total");
+  const $btn     = document.getElementById("approve");
+  const $err     = document.getElementById("err");
+  const $loading = document.getElementById("loading");
+  const $warn    = document.getElementById("min-warn");
 
   const state = { lines: [], selected: {} };
-  let MIN_JOB = 129 * 100; // fallback, server can override
+  let MIN_JOB = 129 * 100; // default to $129 unless server overrides
 
   function fmtUSD(n){ return "$" + n.toFixed(2); }
 
@@ -131,7 +132,7 @@
     const left = document.createElement("div");
     left.className = "left";
 
-    // Toggle
+    // Toggle switch
     const label = document.createElement("label");
     label.className = "switch";
     const input = document.createElement("input");
@@ -141,9 +142,9 @@
     const slider = document.createElement("span"); slider.className = "slider";
     label.appendChild(input); label.appendChild(slider);
 
-    // Text block (desc + show more/less)
-    const textBox = document.createElement("div");
-    textBox.className = "textBox";
+    // One-line description with inline Show more/less
+    const descWrap = document.createElement("div");
+    descWrap.className = "descWrap";
 
     const desc = document.createElement("div");
     desc.className = "desc";
@@ -155,13 +156,17 @@
     toggle.onclick = () => {
       const expanded = desc.classList.toggle("expanded");
       toggle.textContent = expanded ? "Show less" : "Show more";
+      // If collapsing, ensure ellipsis recalculates
+      if (!expanded) requestAnimationFrame(() => {
+        if (desc.scrollWidth <= desc.clientWidth) toggle.style.display = "none";
+      });
     };
 
-    textBox.appendChild(desc);
-    textBox.appendChild(toggle);
+    descWrap.appendChild(desc);
+    descWrap.appendChild(toggle);
 
     left.appendChild(label);
-    left.appendChild(textBox);
+    left.appendChild(descWrap);
 
     const right = document.createElement("div");
     right.style.display = "flex";
@@ -181,6 +186,14 @@
 
     li.appendChild(left);
     li.appendChild(right);
+
+    // After the element is in the DOM, detect if truly truncated; if not, hide toggle
+    requestAnimationFrame(() => {
+      if (desc.scrollWidth <= desc.clientWidth) {
+        toggle.style.display = "none";
+      }
+    });
+
     return li;
   }
 
