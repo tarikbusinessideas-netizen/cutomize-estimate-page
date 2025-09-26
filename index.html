@@ -268,10 +268,10 @@
       $btn.disabled = true;
 
       const r = await fetch(`${API_BASE}/api/estimates/${encodeURIComponent(estId)}/customize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lineItemIds })
-      });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ selectedLineIds: lineItemIds }) // ✅ match server
+});
 
       const d = await r.json();
       if(!r.ok || !d.ok) throw new Error(d.error || "Unable to create child estimate.");
