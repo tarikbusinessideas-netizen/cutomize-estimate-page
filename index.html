@@ -7,7 +7,7 @@
 <style>
   :root {
     --bg:#fafafa; --card:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
-    --green:#16a34a; --green-dark:#12843c;
+    --green:#16a34a; --green-dark:#12843c; --locked:#9ca3af;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
@@ -39,19 +39,22 @@
   .slider:before{content:"";position:absolute;height:20px;width:20px;left:3px;top:2px;background:white;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.2s}
   .switch input:checked + .slider{background:var(--green)}
   .switch input:checked + .slider:before{transform:translateX(18px)}
+  .switch.locked .slider{background:#eee;border-color:#ddd}
+  .switch.locked .slider:before{background:#f5f5f5}
 
   /* One-line + ellipsis, with inline Show more/less */
   .descWrap{display:flex;align-items:center;gap:8px;min-width:0}
   .desc{
     flex:1 1 auto;
     font-size:16px; line-height:1.25;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; /* … */
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   .desc.expanded{ white-space:normal; }
   .show-toggle{
     flex:0 0 auto; font-size:12px; color:#6c757d; cursor:pointer; text-decoration:underline;
     display:inline;
   }
+  .badge{font-size:11px;background:#f3f4f6;color:var(--locked);border:1px solid var(--border);padding:2px 6px;border-radius:999px}
 
   @media (max-width:520px){
     .logo{width:90px}
@@ -106,13 +109,17 @@
   const $loading = document.getElementById("loading");
   const $warn    = document.getElementById("min-warn");
 
-  const state = { lines: [], selected: {} };
+  const state = { lines: [], selected: {}, approved: new Set() };
   let MIN_JOB = 129 * 100; // default to $129 unless server overrides
 
   function fmtUSD(n){ return "$" + n.toFixed(2); }
 
   function updateTotalUI(){
-    const cents = state.lines.reduce((sum, l) => sum + (state.selected[l.id] ? l.amountCents : 0), 0);
+    const cents = state.lines.reduce((sum, l) => {
+      if (state.approved.has(l.id)) return sum; // already locked, not part of new approval
+      return sum + (state.selected[l.id] ? l.amountCents : 0);
+    }, 0);
+
     $total.innerHTML = "<strong>" + fmtUSD(cents/100) + "</strong>";
 
     if (cents < MIN_JOB) {
@@ -137,10 +144,25 @@
     label.className = "switch";
     const input = document.createElement("input");
     input.type = "checkbox";
-    input.checked = !!state.selected[line.id];
-    input.addEventListener("change", () => { state.selected[line.id] = input.checked; updateTotalUI(); });
-    const slider = document.createElement("span"); slider.className = "slider";
-    label.appendChild(input); label.appendChild(slider);
+
+    const isApproved = state.approved.has(line.id);
+
+    if (isApproved) {
+      input.checked = false;           // locked items not included in NEW approval
+      input.disabled = true;
+      label.classList.add("locked");
+    } else {
+      input.checked = !!state.selected[line.id];
+      input.addEventListener("change", () => {
+        state.selected[line.id] = input.checked;
+        updateTotalUI();
+      });
+    }
+
+    const slider = document.createElement("span");
+    slider.className = "slider";
+    label.appendChild(input);
+    label.appendChild(slider);
 
     // One-line description with inline Show more/less
     const descWrap = document.createElement("div");
@@ -156,7 +178,6 @@
     toggle.onclick = () => {
       const expanded = desc.classList.toggle("expanded");
       toggle.textContent = expanded ? "Show less" : "Show more";
-      // If collapsing, ensure ellipsis recalculates
       if (!expanded) requestAnimationFrame(() => {
         if (desc.scrollWidth <= desc.clientWidth) toggle.style.display = "none";
       });
@@ -171,7 +192,14 @@
     const right = document.createElement("div");
     right.style.display = "flex";
     right.style.alignItems = "center";
-    right.style.gap = "18px";
+    right.style.gap = "12px";
+
+    if (isApproved) {
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = "Locked";
+      right.appendChild(badge);
+    }
 
     const qty = document.createElement("div");
     qty.className = "qty";
@@ -187,7 +215,7 @@
     li.appendChild(left);
     li.appendChild(right);
 
-    // After the element is in the DOM, detect if truly truncated; if not, hide toggle
+    // Hide "Show more" if not actually truncated
     requestAnimationFrame(() => {
       if (desc.scrollWidth <= desc.clientWidth) {
         toggle.style.display = "none";
@@ -211,8 +239,11 @@
 
       if (d.minJobCents) MIN_JOB = d.minJobCents;
 
-      state.lines = d.lines;
-      state.selected = Object.fromEntries(d.lines.map(l => [l.id, true])); // default ON
+      state.lines = d.lines || [];
+      state.approved = new Set((d.approvedLineIds || []).map(String));
+
+      // Default ON only for items that are NOT approved/locked
+      state.selected = Object.fromEntries(state.lines.map(l => [l.id, !state.approved.has(l.id)]));
 
       $list.innerHTML = "";
       state.lines.forEach(l => $list.appendChild(makeRow(l)));
@@ -224,21 +255,29 @@
     }
   }
 
-  $btn.addEventListener("click", async () => {
+  // APPROVE -> hit the QBO-index endpoint that worked in curl
+  document.getElementById("approve").addEventListener("click", async () => {
     try{
-      const selectedLineIds = state.lines.filter(l => state.selected[l.id]).map(l => l.id);
-      if(selectedLineIds.length === 0) return;
+      // Collect the QBO line INDEXES for items toggled ON and not locked
+      const lineItemIds = state.lines
+        .filter(l => !state.approved.has(l.id) && state.selected[l.id])
+        .map(l => Number(l.id));
+
+      if(lineItemIds.length === 0) return;
 
       $btn.disabled = true;
-      const r = await fetch(`${API_BASE}/customize/submit`, {
+
+      const r = await fetch(`${API_BASE}/api/estimates/${encodeURIComponent(estId)}/customize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: estId, token, selectedLineIds })
+        body: JSON.stringify({ lineItemIds })
       });
-      const d = await r.json();
-      if(!d.ok) throw new Error(d.error || "Unable to submit.");
 
-      location.href = THANK_YOU_URL; // keep consistent with your /respond accept redirect
+      const d = await r.json();
+      if(!r.ok || !d.ok) throw new Error(d.error || "Unable to create child estimate.");
+
+      // success -> thank you
+      location.href = THANK_YOU_URL;
     }catch(e){
       $err.textContent = e.message || "Submit failed.";
       $err.style.display = "block";
@@ -250,3 +289,4 @@
 </script>
 </body>
 </html>
+
