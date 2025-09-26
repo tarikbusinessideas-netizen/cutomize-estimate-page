@@ -54,20 +54,11 @@
     flex:0 0 auto; font-size:12px; color:#6c757d; cursor:pointer; text-decoration:underline;
     display:inline;
   }
-  .badge{font-size:11px;background:#f3f4f6;color:var(--locked);border:1px solid var(--border);padding:2px 6px;border-radius:999px}
 
-  @media (max-width:520px){
-    .logo{width:90px}
-    h1{font-size:22px}
-    .price{font-size:15px}
-  }
   /* 🔒 Locked rows styling */
-    .row.locked { opacity: .55; }
-    .row.locked .desc { text-decoration: line-through; }
-    .lock-tag {
-      background:#e5e7eb; border:1px solid var(--border);
-      font-size:12px; padding:2px 8px; border-radius:999px; color:#6b7280;
-  }
+  .row.locked { opacity: .55; }
+  .row.locked .desc { text-decoration: line-through; }
+  .badge{font-size:11px;background:#f3f4f6;color:var(--locked);border:1px solid var(--border);padding:2px 6px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -123,7 +114,8 @@
 
   function updateTotalUI(){
     const cents = state.lines.reduce((sum, l) => {
-      if (state.approved.has(l.id)) return sum; // already locked, not part of new approval
+      // Locked items are already approved; they’re not part of this new approval
+      if (state.approved.has(l.id)) return sum;
       return sum + (state.selected[l.id] ? l.amountCents : 0);
     }, 0);
 
@@ -158,6 +150,7 @@
       input.checked = false;           // locked items not included in NEW approval
       input.disabled = true;
       label.classList.add("locked");
+      li.classList.add("locked");      // <-- grey row + strike-through
     } else {
       input.checked = !!state.selected[line.id];
       input.addEventListener("change", () => {
@@ -262,7 +255,7 @@
     }
   }
 
-  // APPROVE -> hit the QBO-index endpoint that worked in curl
+  // APPROVE -> call server with QBO line indexes
   document.getElementById("approve").addEventListener("click", async () => {
     try{
       // Collect the QBO line INDEXES for items toggled ON and not locked
@@ -275,10 +268,10 @@
       $btn.disabled = true;
 
       const r = await fetch(`${API_BASE}/api/estimates/${encodeURIComponent(estId)}/customize`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ selectedLineIds: lineItemIds }) // ✅ match server
-});
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ selectedLineIds: lineItemIds }) // must be "selectedLineIds"
+      });
 
       const d = await r.json();
       if(!r.ok || !d.ok) throw new Error(d.error || "Unable to create child estimate.");
@@ -296,4 +289,3 @@
 </script>
 </body>
 </html>
-
